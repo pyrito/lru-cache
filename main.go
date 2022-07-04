@@ -17,6 +17,7 @@ func main() {
 		fmt.Println("Looks like the value didn't exist?")
 	}
 	fmt.Println(val)
-	fmt.Println("blah blah")
+
+	lru.PrintEntries()
 
 }

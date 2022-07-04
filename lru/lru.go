@@ -3,6 +3,7 @@ package lrucache
 import (
 	"container/list"
 	"errors"
+	"fmt"
 )
 
 // This package implements a simple LRU cache that uses a linked-list
@@ -35,10 +36,12 @@ func NewLRUCache(size int) (*LRUCache, error) {
 
 // Add(key, value) - add entry to the LRU cache
 func (c *LRUCache) Add(key interface{}, value interface{}) {
-	// Check if the value already exists in here
+	// Check if the key already exists in here
 	if val, ok := c.entryStore[key]; ok {
-		// Update the ordering
+		// Update the ordering, update the value
 		c.entryOrder.MoveToFront(val)
+		val.Value.(*Entry).value = value
+		return
 	}
 	// Store in the entry and store in the ordering
 	elem := c.entryOrder.PushFront(&Entry{key, value})
@@ -60,7 +63,19 @@ func (c *LRUCache) Get(key interface{}) (interface{}, error) {
 
 // Remove(key) - remove entry from the cache
 func (c *LRUCache) Remove(key interface{}) error {
+	if _, ok := c.entryStore[key]; !ok {
+		return errors.New("could not find key when trying to remove")
+	}
+	c.entryOrder.Remove(c.entryStore[key])
+	delete(c.entryStore, key)
 	return nil
+}
+
+// PrintEntries() - prints out all the entries in the cache
+func (c *LRUCache) PrintEntries() {
+	for e := c.entryOrder.Front(); e != nil; e = e.Next() {
+		fmt.Println(e.Value.(*Entry))
+	}
 }
 
 // evictOldest() - removes the oldest entry from the cache
