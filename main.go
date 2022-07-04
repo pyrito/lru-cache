@@ -18,6 +18,12 @@ func main() {
 	}
 	fmt.Println(val)
 
+	lru.Add("running", 42)
+	lru.Add("through", 42)
+	lru.PrintEntries()
+	lru.Add("the", 42)
+	lru.Add("ruins", 42)
+	lru.Add("of", 42)
 	lru.PrintEntries()
 
 }

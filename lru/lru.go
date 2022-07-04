@@ -74,12 +74,13 @@ func (c *LRUCache) Remove(key interface{}) error {
 // PrintEntries() - prints out all the entries in the cache
 func (c *LRUCache) PrintEntries() {
 	for e := c.entryOrder.Front(); e != nil; e = e.Next() {
-		fmt.Println(e.Value.(*Entry))
+		fmt.Printf("%v ", e.Value.(*Entry))
 	}
+	fmt.Println("")
 }
 
 // evictOldest() - removes the oldest entry from the cache
 func (c *LRUCache) evictOldest() {
 	entry := c.entryOrder.Remove(c.entryOrder.Back())
-	delete(c.entryStore, entry.(Entry).key)
+	delete(c.entryStore, entry.(*Entry).key)
 }
