@@ -35,6 +35,7 @@ func NewLRUCache(size int) (*LRUCache, error) {
 }
 
 // Add(key, value) - add entry to the LRU cache
+// If key already exists, we just update the value
 func (c *LRUCache) Add(key interface{}, value interface{}) {
 	// Check if the key already exists in here
 	if val, ok := c.entryStore[key]; ok {
